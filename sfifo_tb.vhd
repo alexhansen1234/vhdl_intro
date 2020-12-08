@@ -6,7 +6,7 @@ use ieee.numeric_std_unsigned.all;
 entity sfifo_tb is
     generic (
         DATA_WIDTH : natural := 8;
-        FIFO_ADDR_WIDTH : natural := 8
+        FIFO_ADDR_WIDTH : natural := 4
     );
 end sfifo_tb;
 
@@ -22,7 +22,12 @@ architecture tb of sfifo_tb is
      constant clock_period : time := 1 ns;
 begin
 
-    UUT : entity work.sfifo port map (
+    UUT : entity work.sfifo 
+    generic map (
+        DATA_WIDTH => DATA_WIDTH,
+        FIFO_ADDR_WIDTH => FIFO_ADDR_WIDTH
+    )
+    port map (
         clk => clk, 
         i_nrst => i_nrst, 
         data_in => data_in, 
@@ -46,18 +51,19 @@ begin
         i_nrst <= '1';
         i_wr <= '1';
         i_rd <= '0';
-        wait for (256 * clock_period);
+        wait for ((2**FIFO_ADDR_WIDTH + 1) * clock_period);
         i_rd <= '1';
-        wait for (256 * clock_period);
+        wait for ((2**FIFO_ADDR_WIDTH + 1) * clock_period);
         i_wr <= '0';
-        wait for (256 * clock_period);
+        wait for ((2**FIFO_ADDR_WIDTH + 1) * clock_period);
         i_nrst <= '0';
-        wait;
+        wait for clock_period;
+        std.env.finish;
     end process;
     
     generate_input: process(clk)
     begin
-        if (falling_edge(clk)) then 
+        if (falling_edge(clk) and o_full /= '1') then
             data_in <= std_logic_vector(unsigned(data_in) + 1);
         end if;
     end process;

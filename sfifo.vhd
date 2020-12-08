@@ -101,7 +101,7 @@ begin
             if (i_nrst = '0') then
                 rd_addr <= (others => '0');
             elsif (is_empty = '0'  and i_rd = '1') then
-                data_out <= mem(wr_addr_index);
+                data_out <= mem(rd_addr_index);
                 rd_addr <= rd_addr + 1;
             end if;
         end if;

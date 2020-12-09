@@ -56,6 +56,7 @@ begin
         wait for ((2**FIFO_ADDR_WIDTH + 1) * clock_period);
         i_wr <= '0';
         wait for ((2**FIFO_ADDR_WIDTH + 1) * clock_period);
+        i_rd <= '0';
         i_nrst <= '0';
         wait for clock_period;
         std.env.finish;

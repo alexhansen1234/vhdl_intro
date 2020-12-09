@@ -1,24 +1,3 @@
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date: 12/07/2020 11:45:30 AM
--- Design Name: 
--- Module Name: sfifo - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
--- 
--- Dependencies: 
--- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
--- 
-----------------------------------------------------------------------------------
-
-
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
@@ -100,6 +79,7 @@ begin
         if (rising_edge(clk)) then
             if (i_nrst = '0') then
                 rd_addr <= (others => '0');
+                data_out <= (others => '0');
             elsif (is_empty = '0'  and i_rd = '1') then
                 data_out <= mem(rd_addr_index);
                 rd_addr <= rd_addr + 1;
